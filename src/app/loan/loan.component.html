@@ -1,67 +1,14 @@
-<div class="container-fluid bg-primary text-light py-5">
-  <div class="row">
-
-    
-    <!-- Coluna do formulário -->
-    <div class="col-md-6">
-      <h2 class="text-center mb-4">Simulador de Financiamento (PRICE)</h2>
-      
-      <form (ngSubmit)="onSubmit()" #loanForm="ngForm">
-        <!-- Data de início com calendário -->
-        <div class="mb-3">
-          <label for="dateStart" class="form-label">Data de Início</label>
-          <input type="date" id="dateStart" class="form-control" [(ngModel)]="loan.dateStart" name="dateStart" [min]="minDate" required placeholder="Selecione ou digite a data" />
+<!-- loan.component.html -->
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 text-center">
+        <h1 class="mb-4">Gerenciamento de Empréstimos</h1>
+        <div class="d-grid gap-2">
+          <button class="btn btn-success btn-lg" [routerLink]="['/loan-price']">
+            Calcular Empréstimo Price
+          </button>
         </div>
-        
-        <!-- Valor presente -->
-        <div class="mb-3">
-          <label for="pv" class="form-label">Valor Total</label>
-          <input type="number" id="pv" class="form-control" [(ngModel)]="loan.pv" name="pv" required>
-        </div>
-        
-        <!-- Taxa de juros -->
-        <div class="mb-3">
-          <label for="fees_i" class="form-label">Taxa de Juros (%)</label>
-          <input type="number" id="fees_i" class="form-control" [(ngModel)]="loan.fees_i" name="fees_i" required>
-        </div>
-        
-        <!-- Prazo -->
-        <div class="mb-3">
-          <label for="period_n" class="form-label">Prazo (em meses)</label>
-          <input type="number" id="period_n" class="form-control" [(ngModel)]="loan.period_n" name="period_n" required>
-        </div>
-
-        <!-- Botões -->
-        <div class="text-center">
-          <button type="submit" class="btn btn-light">Calcular</button>
-          <button type="button" class="btn btn-secondary" (click)="resetForm()">Resetar</button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
-</div>
-
-<!-- Tabela de resultados -->
-<div *ngIf="result" class="container mt-5">
-  <h3 class="text-center">Resultados do Financiamento</h3>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Parcela</th>
-        <th scope="col">Valor da Parcela</th>
-        <th scope="col">Amortização</th>
-        <th scope="col">Juros</th>
-        <th scope="col">Saldo devedor</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let installment of result.installments">
-        <td>{{installment.installmentNumber}}</td>
-        <td>{{installment.installmentValue | currency}}</td>
-        <td>{{installment.amortization | currency}}</td>
-        <td>{{installment.interest | currency}}</td>
-        <td>{{installment.remainingBalance | currency}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  

@@ -3,13 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ClientsComponent } from './clients/clients.component';
-import { HttpClientModule } from '@angular/common/http';  // Importando HttpClientModule
-import { ClientService } from './client-service/client.service';  
+import { HomeComponent } from './home/home.component';
+import { CreateClientComponent } from './create-client/create-client.component';
+import { ListClientComponent } from './list-client/list-client.component';
+import { LoanPriceComponent } from './loan-price/loan-price.component';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { HomeComponent } from './home/home.component';  // Importando FormsModule
 import { RouterModule } from '@angular/router';
-import { LoanComponent } from './loan/loan.component';
 import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ClientService } from './client-service/client.service';
+import { LoanComponent } from './loan/loan.component'; // Import the standalone LoanComponent here
 
 @NgModule({
   declarations: [
@@ -24,11 +27,14 @@ import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule,
     HttpClientModule,
     FormsModule,
-    LoanComponent,
     NgbModule,
-    NgbDatepickerModule   
+    NgbDatepickerModule,
+    LoanComponent,
+    LoanPriceComponent,
+    CreateClientComponent,
+    ListClientComponent,
   ],
   providers: [ClientService],
-  bootstrap: [AppComponent]  // Apenas o AppComponent deve ser colocado aqui
+  bootstrap: [AppComponent]  // Only AppComponent should be bootstrapped here
 })
-export class AppModule { }
+export class AppModule {}
