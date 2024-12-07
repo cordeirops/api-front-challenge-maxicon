@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'api-front';
+  title = 'Minha Aplicação de Gerenciamento';
 }

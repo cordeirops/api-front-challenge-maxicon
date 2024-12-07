@@ -1,2 +1,24 @@
-<app-clients></app-clients>
-<router-outlet></router-outlet>
+<!-- Barra de navegação (Navbar) -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Minha Aplicação</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav">
+            <li class="nav-item me-2"> <!-- Adicionando margem à direita -->
+                <button [routerLink]="'/clientes'" class="btn btn-primary">Clientes</button>
+            </li>
+            <li class="nav-item me-2"> <!-- Adicionando margem à direita -->
+                <button [routerLink]="'/emprestimos'" class="btn btn-secondary">Empréstimos</button>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Conteúdo da página (será trocado com o router-outlet) -->
+<div class="container" style="min-height: 80vh;">
+    <router-outlet></router-outlet>
+</div>
+
+<!-- Footer -->
+<footer class="bg-light text-center py-3 mt-auto">
+    <p class="mb-0">Desenvolvido por: Pedro Sbaraini Cordeiro</p>
+</footer>
