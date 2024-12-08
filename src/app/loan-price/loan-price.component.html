@@ -2,9 +2,9 @@
   <div class="row">
     <!-- Coluna do formulário -->
     <div class="col-md-6">
-      <h2 class="text-center mb-4">Simulador de Financiamento (PRICE)</h2>
+      <h2 class="text-center mb-4">Simulador de Empréstimo (PRICE)</h2>
 
-      <form>
+      <form (ngSubmit)="onSubmit()" #loanForm="ngForm">
         <!-- Data de início com calendário -->
         <div class="mb-3">
           <label for="dateStart" class="form-label">Data de Início</label>
@@ -20,15 +20,84 @@
             </option>
           </select>
         </div>
-        <!-- PTAX -->
-        <div class="mb-3">
-          <label for="ptax" class="form-label">PTAX:</label>
-          <input type="text" id="ptax" class="form-control" [value]="ptax" readonly />
-        </div>
+
         
 
+        <!-- PV -->
+        <div class="mb-3">
+          <label for="pv" class="form-label">Valor a ser emprestado na moeda escolhida:</label>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input 
+              type="number" 
+              id="pv" 
+              class="form-control" 
+              [(ngModel)]="pv" 
+              name="pv" 
+              required 
+            />
+          </div>
+        </div>
 
+        <!-- I -->
+        <div class="mb-3">
+          <label for="fees_i" class="form-label">Taxa de juros mensal:</label>
+          <input type="number" id="fees_i" class="form-control" [(ngModel)]="fees_i" name="fees_i" required />
+        </div>
+
+        <!-- N -->
+        <div class="mb-3">
+          <label for="period_n" class="form-label">Número de parcelas:</label>
+          <input type="number" id="period_n" class="form-control" [(ngModel)]="period_n" name="period_n" required />
+        </div>
+
+        <div class="d-grid gap-2">
+          <button type="submit">Calcular Preço do Empréstimo</button>
+        </div>
       </form>
     </div>
+
+    <!-- Coluna do resultado -->
+    <div class="col-md-6">
+      <h3 class="text-center mb-4">Resultado do Empréstimo</h3>
+
+      <!-- Exibir resultados do cálculo -->
+      <div *ngIf="loanResult">
+        <p><strong>Data de Início: </strong> {{ loanResult.date_start | date: 'dd/MM/yyyy' }}</p>
+        <p><strong>Data de Fim: </strong> {{ loanResult.date_end | date: 'dd/MM/yyyy' }}</p>
+        <p><strong>Período (meses): </strong> {{ loanResult.period_n }}</p>
+        <p><strong>Valor Emprestado na Moeda: </strong> {{loanResult.currency}} {{ loanResult.amount_pv | currency }}</p>
+        <p><strong>Valor Inicial Convertido: </strong>{{ loanResult.ajustedAmount | currency:'BRL':'symbol' }}</p>
+        <p><strong>Valor Total do Empréstimo: </strong>{{ loanResult.total_loan | currency:'BRL':'symbol' }}</p>
+        <p><strong>Taxa de Juros Mensal (%): </strong> {{ loanResult.fees_i }}%</p>
+        <p><strong>PTAX: </strong> {{ loanResult.ptax }}</p>
+        <p><strong>Valor das Parcelas: </strong> {{ loanResult.pmt | currency:'BRL':'symbol' }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabela de resultados -->
+  <div class="container mt-5" *ngIf="loanResult?.installments">
+    <h3 class="text-center">Resultados do Financiamento</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Parcela</th>
+          <th scope="col">Valor da Parcela</th>
+          <th scope="col">Amortização</th>
+          <th scope="col">Juros</th>
+          <th scope="col">Saldo Devedor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let installment of loanResult.installments">
+          <td>{{installment.installmentNumber}}</td>
+          <td>{{installment.installmentValue | currency:'BRL':'symbol'}}</td>
+          <td>{{installment.amortization | currency:'BRL':'symbol'}}</td>
+          <td>{{installment.interest | currency:'BRL':'symbol'}}</td>
+          <td>{{installment.remainingBalance | currency:'BRL':'symbol'}}</td>
+        </tr>             
+      </tbody>
+    </table>
   </div>
 </div>

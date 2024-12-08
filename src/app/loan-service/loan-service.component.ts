@@ -4,28 +4,32 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+
+export interface Loan {
+  date_start: string;
+  pv: number;
+  fees_i: number;
+  period_n: number;
+  ptax: number | null;
+  currency: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class LoanService {
 
-  private apiUrl = 'http://localhost:8080/loans';  // URL da sua API
-
   constructor(private http: HttpClient) { }
 
-  // // Método para pegar todos os empréstimos
-  // getLoans(): Observable<Loan[]> {
-  //   return this.http.get<Loan[]>(this.apiUrl);
-  // }
 
 
   getCurrencies(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/get-currencies`);
+    return this.http.get<any>(`http://localhost:8080/currency/get-currencies`);
   }
 
   getPtax(currency: string, date: string): Observable<number | null> {
     const ptaxDTO = { currency, date };
-    return this.http.post<any>(`${this.apiUrl}/get-ptax`, ptaxDTO).pipe(
+    return this.http.post<any>(`http://localhost:8080/currency/get-ptax`, ptaxDTO).pipe(
       map(response => {
         if (response && Array.isArray(response) && response.length > 0) {
           // Acessa o primeiro item do array, que contém os dados relevantes
@@ -38,10 +42,13 @@ export class LoanService {
       })
     );
   }
-  // // Método para criar um novo empréstimo
-  // createLoanPrice(loan: Loan): Observable<Loan> {
-  //   var locate  = 'http://localhost:8080/loans/calculate-price';
-  //   return this.http.post<Loan>(this.apiUrl, loan);
-  // }
+
+  // Método para criar um novo empréstimo
+  calculateLoanPrice(loan: Loan): Observable<Loan> {
+    const url = 'http://localhost:8080/loan/calculate-price';
+    return this.http.post<Loan>(url, loan);
+  }
 
 }
+
+
