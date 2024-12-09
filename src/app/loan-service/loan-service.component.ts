@@ -3,28 +3,39 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { Client } from '../client-model/client.model';
 
 export interface Loan {
   date_start: string;
-  pv: number;
-  fees_i: number;
-  period_n: number;
+  amount_pv: number | null;
+  fees_i: number | null;
+  period_n: number | null;
   ptax: number | null;
   currency: string;
+  loanType: string;
+  client_id: Client["id"] | null;
 }
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class LoanService {
 
   constructor(private http: HttpClient) { }
 
 
+  getClients(): Observable<Client[]> {
+    return this.http.get<Client[]>(`http://localhost:8080/clients`);
+  }
+  
 
   getCurrencies(): Observable<any> {
     return this.http.get<any>(`http://localhost:8080/currency/get-currencies`);
+  }
+
+  getTypes(): Observable<any> {
+    return this.http.get<any>(`http://localhost:8080/loan/types`);
   }
 
   getPtax(currency: string, date: string): Observable<number | null> {
@@ -46,6 +57,12 @@ export class LoanService {
   // Método para criar um novo empréstimo
   calculateLoanPrice(loan: Loan): Observable<Loan> {
     const url = 'http://localhost:8080/loan/calculate-price';
+    return this.http.post<Loan>(url, loan);
+  }
+
+  // Método para criar um novo empréstimo
+  saveLoan(loan: Loan): Observable<Loan> {
+    const url = 'http://localhost:8080/loan/save-loan';
     return this.http.post<Loan>(url, loan);
   }
 

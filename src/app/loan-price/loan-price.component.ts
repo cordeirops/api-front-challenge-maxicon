@@ -18,6 +18,7 @@ interface PtaxItem {
   cotacaoVenda: number;
   dataHoraCotacao: string;
   tipoBoletim: string;
+  type: string;
 }
 
 @Component({
@@ -32,17 +33,26 @@ export class LoanPriceComponent implements OnInit {
   // Inicializando diretamente na declaração
   minDate: string = '';
   currentDate: string = '';
+  type: string[] = [];
+  selectedType: string = '';
+
+  clientOptions: { id: number; name: string }[] = []; // Lista de opções de cliente
+  selectedClientId: number | null = null; // ID do cliente selecionado
+
 
   currencies: Currency[] = [];
   selectedCurrency: string = '';
   ptax: number | null = null; // Certifique-se de que a variável "ptax" esteja definida
 
-  pv: number = 0;
-
-  fees_i: number = 0;
-  period_n: number = 0;
+  amount_pv: number | null = null;
+  fees_i: number | null = null;
+  period_n: number | null = null;
 
   currency: string = '';
+
+
+  amount_pvFormatted = ''; // Valor formatado para exibição
+  feesIFormatted = ''; // Taxa de juros formatada para exibição
 
   loanResult: any = null; // Adicionando a variável para armazenar o resultado
 
@@ -54,8 +64,33 @@ export class LoanPriceComponent implements OnInit {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0]; // Formato YYYY-MM-DD
     this.currentDate = this.minDate; // A data atual
-    this.fees_i = 0;
-    this.period_n = 0;
+    this.fees_i = null;
+    this.period_n = null;
+
+    this.loanService.getClients().subscribe(
+      (clients) => {
+        this.clientOptions = clients.map((client: any) => ({
+          id: client.id,
+          name: client.name,
+        }));
+        console.log('Clientes carregados:', this.clientOptions);
+      },
+      (error) => {
+        console.error('Erro ao carregar clientes:', error);
+      }
+    );
+    
+
+    this.loanService.getTypes().subscribe(
+      (data: string[]) => {
+        console.log('Tipos de empréstimo:', data);
+        this.type = data; // data deve ser um array de strings
+      },
+      (error) => {
+        console.error('Erro ao buscar tipos de empréstimo:', error);
+        this.type = []; // Garanta que seja um array vazio em caso de erro
+      }
+    );
 
     this.loanService.getCurrencies().subscribe(
       (data) => {
@@ -78,12 +113,16 @@ export class LoanPriceComponent implements OnInit {
     // Cria o objeto Loan com os dados fornecidos
     const loan: Loan = {
       date_start: this.currentDate,
-      pv: this.pv,
+      amount_pv: this.amount_pv,
       fees_i: this.fees_i,
       period_n: this.period_n,
       ptax: this.ptax,
-      currency: this.selectedCurrency
+      currency: this.selectedCurrency,
+      loanType: this.selectedType,
+      client_id: this.selectedClientId
     };
+
+    console.log('Envio para api', loan)
 
     // Chama o método do serviço para calcular o preço do empréstimo
     this.loanService.calculateLoanPrice(loan).subscribe(
@@ -96,6 +135,22 @@ export class LoanPriceComponent implements OnInit {
       }
     );
   }
+
+  onClick() {
+  
+    console.log('Envio para API no onClick:', this.loanResult); // Logando o objeto antes de enviar
+  
+    // Chama o serviço para salvar o empréstimo
+    this.loanService.saveLoan(this.loanResult).subscribe(
+      (response) => {
+        console.log('Empréstimo salvo com sucesso:', response);
+      },
+      (error) => {
+        console.error('Erro ao salvar o empréstimo:', error);
+      }
+    );
+  }
+
   // Chama o serviço para pegar a PTAX
   onCurrencyChange() {
     if (!this.currentDate || !this.selectedCurrency) {
@@ -123,6 +178,72 @@ export class LoanPriceComponent implements OnInit {
         this.ptax = null; // Define como null em caso de erro
       }
     );
+  }
+
+  onLoanTypeChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    this.selectedType = target.value; // Atualiza o tipo de empréstimo selecionado
+    console.log('Tipo de Empréstimo Selecionado:', this.selectedType);
+  }
+
+  onClientChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const value = target.value ? Number(target.value) : null; // Converte o valor para número
+    this.selectedClientId = value; // Atribui o ID selecionado
+    console.log('Cliente Selecionado:', this.selectedClientId);
+  }
+
+
+  // Manipulador de entrada para campos numéricos formatados
+  // Manipulador de entrada
+  onInputCurrency(event: Event, field: 'amount_pv' | 'fees_i'): void {
+    const input = event.target as HTMLInputElement;
+  
+    const rawValue = input.value.replace(/[^\d,]/g, '');
+  
+    if (field === 'amount_pv') {
+      this.amount_pvFormatted = rawValue;
+    } else if (field === 'fees_i') {
+      this.feesIFormatted = rawValue;
+    }
+  }
+  
+  onBlurCurrency(field: 'amount_pv' | 'fees_i'): void {
+    let rawValue: string;
+    if (field === 'amount_pv') {
+      rawValue = this.amount_pvFormatted.replace(/\./g, '').replace(',', '.');
+    } else {
+      rawValue = this.feesIFormatted.replace(/\./g, '').replace(',', '.');
+    }
+  
+    const numericValue = parseFloat(rawValue);
+  
+    if (!isNaN(numericValue)) {
+      if (field === 'amount_pv') {
+        this.amount_pv = numericValue;
+        this.amount_pvFormatted = this.formatDisplayValue(numericValue);
+      } else if (field === 'fees_i') {
+        this.fees_i = numericValue;
+        this.feesIFormatted = this.formatDisplayValue(numericValue);
+      }
+    } else {
+      if (field === 'amount_pv') {
+        this.amount_pv = null;
+        this.amount_pvFormatted = '';
+      } else if (field === 'fees_i') {
+        this.fees_i = null;
+        this.feesIFormatted = '';
+      }
+    }
+  }
+
+  // Formata o valor para exibição (ex.: 1.234,56)
+  formatDisplayValue(value: number | null): string {
+    if (value === null) return '';
+    return new Intl.NumberFormat('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(value);
   }
   
   
