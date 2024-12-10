@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 
 
+
 interface Currency {
   simbolo: string;
   nomeFormatado: string;
@@ -55,6 +56,8 @@ export class LoanPriceComponent implements OnInit {
 
   loanResult: any = null; // Adicionando a variável para armazenar o resultado
 
+  validationErrors: { [key: string]: string } = {};
+
 
   constructor(private loanService: LoanService) {}
 
@@ -102,13 +105,45 @@ export class LoanPriceComponent implements OnInit {
     );
   }
 
-  // Método que será chamado no submit
   onSubmit() {
-    if (!this.ptax) {
-      console.log('PTAX não definida. Aguardando dados da PTAX...');
+    // Resetar erros anteriores
+    this.validationErrors = {};
+  
+    if (!this.currentDate) this.validationErrors['currentDate'] = 'Data não preenchida.';
+    if (!this.selectedClientId) this.validationErrors['selectedClientId'] = 'Cliente não selecionado.';
+    if (!this.selectedType) this.validationErrors['selectedType'] = 'Tipo de empréstimo não selecionado.';
+    if (!this.selectedCurrency) this.validationErrors['selectedCurrency'] = 'Moeda não selecionada.';
+    if (this.ptax === null) this.validationErrors['ptax'] = 'PTAX não preenchido.';
+    if (this.period_n === null) this.validationErrors['period_n'] = 'Período não preenchido.';
+    if (this.amount_pv === null) this.validationErrors['amount_pv'] = 'Valor presente não preenchido.';
+    if (this.fees_i === null) this.validationErrors['fees_i'] = 'Taxa de juros não preenchida.';
+  
+  if (Object.keys(this.validationErrors).length > 0) {
+    let errorMessages = Object.values(this.validationErrors).join('\n');
+    alert('Por favor, preencha todos os campos obrigatórios:\n' + errorMessages);
+    return;
+  }
+  
+    this.calculateLoan();
+  }
+  
+
+
+  calculateLoan() {
+    if (
+      !this.currentDate ||
+      !this.selectedClientId ||
+      !this.selectedType ||
+      !this.selectedCurrency ||
+      this.ptax === null ||
+      this.period_n === null ||
+      this.amount_pv === null ||
+      this.fees_i === null
+    ) {
+      alert('Por favor, preencha todos os campos obrigatórios antes de calcular.');
       return;
     }
-
+  
     // Cria o objeto Loan com os dados fornecidos
     const loan: Loan = {
       date_start: this.currentDate,
@@ -118,11 +153,11 @@ export class LoanPriceComponent implements OnInit {
       ptax: this.ptax,
       currency: this.selectedCurrency,
       loanType: this.selectedType,
-      client_id: this.selectedClientId
+      client_id: this.selectedClientId,
     };
-
-    console.log('Envio para api', loan)
-
+  
+    console.log('Envio para API:', loan);
+  
     // Chama o método do serviço para calcular o preço do empréstimo
     this.loanService.calculateLoanPrice(loan).subscribe(
       (result) => {
@@ -134,6 +169,7 @@ export class LoanPriceComponent implements OnInit {
       }
     );
   }
+  
 
   onClick() {
   

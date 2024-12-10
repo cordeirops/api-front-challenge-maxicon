@@ -40,7 +40,7 @@
         <!-- Moeda -->
         <div class="mb-4">
           <label for="currency" class="form-label">Moeda</label>
-          <select id="currency" class="form-select" [(ngModel)]="selectedCurrency" name="currency" (change)="onCurrencyChange()">
+          <select id="currency" class="form-select" [(ngModel)]="selectedCurrency" name="currency" (change)="onCurrencyChange()" required>
             <option value="" disabled selected>Selecione a Moeda</option>
             <option *ngFor="let currency of currencies" [value]="currency.simbolo">
               {{ currency.nomeFormatado }} ({{ currency.simbolo }})
@@ -78,6 +78,7 @@
               (input)="onInputCurrency($event, 'amount_pv')" 
               (blur)="onBlurCurrency('amount_pv')"
               [value]="amount_pvFormatted"
+              required
             />
           </div>
         </div>
@@ -93,6 +94,7 @@
             (input)="onInputCurrency($event, 'fees_i')" 
             (blur)="onBlurCurrency('fees_i')"
             [value]="feesIFormatted"
+            required
           />
         </div>
 
@@ -103,7 +105,7 @@
         </div>
 
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-light">Calcular Preço do Empréstimo</button>
+          <button type="submit" class="btn btn-light">Calcular Empréstimo</button>
         </div>
       </form>
     </div>
