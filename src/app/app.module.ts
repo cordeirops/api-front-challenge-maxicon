@@ -12,13 +12,15 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbDatepickerModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClientService } from './client-service/client.service';
-import { LoanComponent } from './loan/loan.component'; // Import the standalone LoanComponent here
+import { LoanComponent } from './loan/loan.component';
+import { ListLoanComponent } from './list-loan/list-loan.component'; // Import the standalone LoanComponent here
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ClientsComponent,
+
     
   ],
   imports: [
@@ -33,6 +35,7 @@ import { LoanComponent } from './loan/loan.component'; // Import the standalone 
     LoanPriceComponent,
     CreateClientComponent,
     ListClientComponent,
+    ListLoanComponent
   ],
   providers: [ClientService],
   bootstrap: [AppComponent]  // Only AppComponent should be bootstrapped here

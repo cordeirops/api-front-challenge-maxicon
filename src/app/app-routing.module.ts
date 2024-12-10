@@ -6,6 +6,7 @@ import { LoanComponent } from './loan/loan.component';
 import { CreateClientComponent } from './create-client/create-client.component';
 import { ListClientComponent } from './list-client/list-client.component';
 import { LoanPriceComponent } from './loan-price/loan-price.component';
+import { ListLoanComponent } from './list-loan/list-loan.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }, 
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'create-client', component: CreateClientComponent },
   { path: 'list-client', component: ListClientComponent },
   { path: 'loan-price', component: LoanPriceComponent },
+  {path: 'list-loan', component: ListLoanComponent}
 ];
 
 @NgModule({

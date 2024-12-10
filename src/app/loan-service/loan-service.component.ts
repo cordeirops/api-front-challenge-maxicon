@@ -28,6 +28,10 @@ export class LoanService {
   getClients(): Observable<Client[]> {
     return this.http.get<Client[]>(`http://localhost:8080/clients`);
   }
+
+  getLoans(): Observable<Loan[]> {
+    return this.http.get<Loan[]>(`http://localhost:8080/loan/list-loan`);
+  }
   
 
   getCurrencies(): Observable<any> {
