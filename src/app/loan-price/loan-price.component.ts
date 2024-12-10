@@ -22,11 +22,10 @@ interface PtaxItem {
 }
 
 @Component({
-  selector: 'app-loan-price',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './loan-price.component.html',
-  styleUrls: ['./loan-price.component.css']
+    selector: 'app-loan-price',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './loan-price.component.html',
+    styleUrls: ['./loan-price.component.css']
 })
 export class LoanPriceComponent implements OnInit {
 

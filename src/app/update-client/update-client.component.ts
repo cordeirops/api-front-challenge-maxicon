@@ -6,11 +6,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-update-client',
-  standalone: true,
-  templateUrl: './update-client.component.html',
-  styleUrls: ['./update-client.component.css'],
-  imports: [CommonModule, FormsModule]
+    selector: 'app-update-client',
+    templateUrl: './update-client.component.html',
+    styleUrls: ['./update-client.component.css'],
+    imports: [CommonModule, FormsModule]
 })
 export class UpdateClientComponent implements OnInit {
   client: Client = { id: 0, name: '', age: 0, email: '', cpf: '' };  // Inicialize com valores padrão

@@ -7,11 +7,10 @@ import { FormsModule } from '@angular/forms';
 
 
 @Component({
-  selector: 'app-list-client',
-  standalone: true,
-  templateUrl: './list-client.component.html',
-  styleUrls: ['./list-client.component.css'],
-  imports: [CommonModule, FormsModule]
+    selector: 'app-list-client',
+    templateUrl: './list-client.component.html',
+    styleUrls: ['./list-client.component.css'],
+    imports: [CommonModule, FormsModule]
 })
 export class ListClientComponent implements OnInit {
   clients: Client[] = [];
