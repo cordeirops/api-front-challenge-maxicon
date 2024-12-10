@@ -1,28 +1,65 @@
 <div class="container mt-4">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <h1 class="mb-4">Lista de Clientes</h1>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Idade</th>
-              <th>Email</th>
-              <th>CPF</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let client of clients">
-              <td>{{ client.id }}</td>
-              <td>{{ client.name }}</td>
-              <td>{{ client.age }}</td>
-              <td>{{ client.email }}</td>
-              <td>{{ client.cpf }}</td>
-            </tr>
-          </tbody>
-        </table>
+  <h2>Lista de Clientes</h2>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>Email</th>
+            <th>CPF</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of clients">
+            <td>{{ client.id }}</td>
+            <td>{{ client.name }}</td>
+            <td>{{ client.age }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.cpf }}</td>
+            <td>
+              <button class="btn btn-warning" (click)="openModal(client)">Atualizar</button>
+              <button class="btn btn-danger" (click)="deleteClient(client.id)">Excluir</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal para edição do cliente -->
+  <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="clientModalLabel">Editar Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="updateClient()">
+            <div class="mb-3">
+              <label for="name" class="form-label">Nome</label>
+              <input type="text" id="name" [(ngModel)]="selectedClient.name" name="name" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="age" class="form-label">Idade</label>
+              <input type="number" id="age" [(ngModel)]="selectedClient.age" name="age" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" [(ngModel)]="selectedClient.email" name="email" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label for="cpf" class="form-label">CPF</label>
+              <input type="text" id="cpf" [(ngModel)]="selectedClient.cpf" name="cpf" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Atualizar</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-  
+</div>
