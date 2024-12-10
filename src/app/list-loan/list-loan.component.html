@@ -2,11 +2,16 @@
   <h2 class="text-center mb-4">Lista de Empréstimos</h2>
   <div *ngIf="loans.length > 0; else noLoans">
     <div class="card mb-3" *ngFor="let loan of loans">
-      <div class="card-header" (click)="toggleInstallments(loan.id)">
+      <div class="card-header d-flex justify-content-between align-items-center">
         <h5>
           Empréstimo: {{ loan.id }} - Moeda:
           <span class="badge bg-primary ms-2">{{ loan.currency }}</span>
         </h5>
+        <button 
+          class="btn btn-danger btn-sm" 
+          (click)="deleteLoan(loan.id)">
+          Excluir
+        </button>
       </div>
       <div class="card-body">
         <div class="row">
@@ -21,13 +26,13 @@
             <p><strong>Valor Ajustado:</strong> {{ loan.ajustedAmount | currency: 'BRL':'symbol' }}</p>
             <p><strong>Total do Empréstimo:</strong> {{ loan.total_loan | currency: 'BRL':'symbol' }}</p>
           </div>
-          <button 
-          class="btn btn-link text-decoration-none" 
+        </div>
+        <button 
+          class="btn btn-link text-decoration-none mt-3" 
           (click)="toggleInstallments(loan.id)">
           {{ loan.showInstallments ? 'Ocultar Detalhes' : 'Mostrar Detalhes' }}
         </button>
-        </div>
-        
+
         <!-- Exibir Parcelas apenas se a variável showInstallments for verdadeira -->
         <div *ngIf="loan.showInstallments">
           <p><strong>Parcelas:</strong></p>

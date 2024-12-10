@@ -32,6 +32,21 @@ export class ListLoanComponent implements OnInit {
     );
   }
 
+  deleteLoan(loanId: number) {
+    if (confirm('Tem certeza que deseja excluir este empréstimo?')) {
+      this.loanService.deleteLoan(loanId).subscribe(
+        (response) => {
+          alert('Empréstimo excluído com sucesso!');
+          this.loans = this.loans.filter((loan) => loan.id !== loanId);  // Remove da lista local
+        },
+        (error) => {
+          alert('Erro ao excluir o empréstimo!');
+          console.error('Erro ao excluir o empréstimo:', error);
+        }
+      );
+    }
+  }
+
   toggleInstallments(loanId: number): void {
     const loan = this.loans.find(l => l.id === loanId);
     if (loan) {

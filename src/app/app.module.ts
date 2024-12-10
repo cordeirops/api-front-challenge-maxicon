@@ -41,6 +41,6 @@ import { UpdateClientComponent } from './update-client/update-client.component';
     UpdateClientComponent,
   ],
   providers: [ClientService],
-  bootstrap: [AppComponent, ListClientComponent]  // Only AppComponent should be bootstrapped here
+  bootstrap: [AppComponent]  // Only AppComponent should be bootstrapped here
 })
 export class AppModule {}

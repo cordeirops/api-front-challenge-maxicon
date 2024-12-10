@@ -142,12 +142,20 @@ export class LoanPriceComponent implements OnInit {
     // Chama o serviço para salvar o empréstimo
     this.loanService.saveLoan(this.loanResult).subscribe(
       (response) => {
+        alert('Empréstimo salvo com sucesso!');
         console.log('Empréstimo salvo com sucesso:', response);
-      },
+        location.reload();  // Isso irá atualizar a página
+              },
       (error) => {
+        alert('Erro ao salvar o empréstimo!');
         console.error('Erro ao salvar o empréstimo:', error);
       }
     );
+  }
+
+  saveLoan() {
+    // Lógica para salvar o empréstimo
+    console.log('Empréstimo salvo!');
   }
 
   // Chama o serviço para pegar a PTAX

@@ -1,3 +1,4 @@
+<!-- loan-price.component.html -->
 <div class="container-fluid bg-primary text-light py-5">
   <div class="row">
     <!-- Coluna do formulário -->
@@ -11,6 +12,7 @@
           <input type="date" id="dateStart" class="form-control" name="dateStart" [min]="minDate" [(ngModel)]="currentDate" required placeholder="Selecione ou digite a data" />
         </div>
 
+        <!-- Seleção de Cliente -->
         <div class="mb-4">
           <label for="client" class="form-label">Cliente</label>
           <select
@@ -65,35 +67,34 @@
 
         <!-- Valor a ser emprestado -->
         <div class="mb-3">
-        <label for="amount_pv" class="form-label">Valor a ser emprestado na moeda escolhida:</label>
-        <div class="input-group">
-          <span class="input-group-text">R$</span>
-          <input 
-            type="text" 
-            id="amount_pv"
-            placeholder="Insira o valor"
-            class="form-control" 
-            (input)="onInputCurrency($event, 'amount_pv')" 
-            (blur)="onBlurCurrency('amount_pv')"
-            [value]="amount_pvFormatted"
-          />
-        </div>
+          <label for="amount_pv" class="form-label">Valor a ser emprestado na moeda escolhida:</label>
+          <div class="input-group">
+            <span class="input-group-text">R$</span>
+            <input 
+              type="text" 
+              id="amount_pv"
+              placeholder="Insira o valor"
+              class="form-control" 
+              (input)="onInputCurrency($event, 'amount_pv')" 
+              (blur)="onBlurCurrency('amount_pv')"
+              [value]="amount_pvFormatted"
+            />
+          </div>
         </div>
 
         <!-- Taxa de Juros Mensal -->
         <div class="mb-3">
-        <label for="fees_i" class="form-label">Taxa de juros mensal:</label>
-        <input 
-          type="text" 
-          id="fees_i"
-          placeholder="Insira a taxa de juros"
-          class="form-control" 
-          (input)="onInputCurrency($event, 'fees_i')" 
-          (blur)="onBlurCurrency('fees_i')"
-          [value]="feesIFormatted"
-        />
+          <label for="fees_i" class="form-label">Taxa de juros mensal:</label>
+          <input 
+            type="text" 
+            id="fees_i"
+            placeholder="Insira a taxa de juros"
+            class="form-control" 
+            (input)="onInputCurrency($event, 'fees_i')" 
+            (blur)="onBlurCurrency('fees_i')"
+            [value]="feesIFormatted"
+          />
         </div>
-
 
         <!-- Número de Parcelas -->
         <div class="mb-4">
@@ -104,7 +105,6 @@
         <div class="d-grid gap-2">
           <button type="submit" class="btn btn-light">Calcular Preço do Empréstimo</button>
         </div>
-
       </form>
     </div>
   </div>
@@ -131,14 +131,13 @@
     </div>
   </div>
 </div>
-
-<div (click)="onClick()">
-<div class="d-grid gap-2">
-    <button type="submit" class="btn btn-light">Salvar Empréstimo</button>
+<!-- Botão de salvar, visível apenas quando há parcelas -->
+<div *ngIf="loanResult?.installments">
+  <div class="d-grid gap-2">
+    <button type="submit" class="btn btn-success" (click)="onClick()">Salvar Empréstimo</button>
+  </div>
 </div>
-</div>
-
-<!-- Tabela de resultados -->
+<!-- Tabela de resultados do financiamento -->
 <div class="container mt-5" *ngIf="loanResult?.installments">
   <h3 class="text-center">Resultados do Financiamento</h3>
   <table class="table table-striped">
@@ -162,3 +161,5 @@
     </tbody>
   </table>
 </div>
+
+

@@ -70,6 +70,10 @@ export class LoanService {
     return this.http.post<Loan>(url, loan);
   }
 
+  deleteLoan(id: number): Observable<any> {
+    return this.http.delete(`http://localhost:8080/loan/${id}`);
+  }
+
 }
 
 

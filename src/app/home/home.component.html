@@ -1,17 +1,14 @@
 
-<!-- home.component.html -->
 <div class="container mt-5">
-  <h1>Bem-vindo à Página Inicial!</h1>
+  <h1>Bem-vindo!</h1>
   <p>Escolha uma das opções abaixo para navegar:</p>
   
   <div class="d-flex justify-content-center">
-    <!-- Botão para navegar para Clientes -->
     <button [routerLink]="'/clientes'" class="btn btn-primary btn-lg mx-3">
       Clientes
     </button>
 
-    <!-- Botão para navegar para Empréstimos -->
-    <button [routerLink]="'/emprestimos'" class="btn btn-secondary btn-lg mx-3">
+    <button [routerLink]="'/emprestimos'" class="btn btn-success btn-lg mx-3">
       Empréstimos
     </button>
   </div>

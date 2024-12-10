@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'emprestimos', component: LoanComponent },
   { path: 'create-client', component: CreateClientComponent },
   { path: 'list-client', component: ListClientComponent },
-  { path: 'update-client', component: UpdateClientComponent },  // Rota para a atualização do cliente
+  { path: 'update-client/:id', component: UpdateClientComponent },  // Rota para a atualização do cliente
   { path: 'loan-price', component: LoanPriceComponent },
   {path: 'list-loan', component: ListLoanComponent}
 ];
